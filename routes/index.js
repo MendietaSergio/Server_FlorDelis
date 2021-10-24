@@ -4,18 +4,18 @@ const router = express.Router();
 
 const itemsController = require('../controllers/itemsController');
 module.exports = function () {
-    //post: /items
-    router.post('/items',itemsController.add)
-    
     //get:/items
     router.get('/items',itemsController.list);
     
     //get: /items/:id
     router.get('/items/:id',itemsController.detail);
     
+
+    //post: /items
+    //antes de invocar a itemsController.add, hace el middleware fileUpload.
+    router.post('/items',itemsController.fileUpload,itemsController.add)
     //put: /items/:id
-    router.put('/items/:id',itemsController.update);
-    
+    router.put('/items/:id',itemsController.fileUpload,itemsController.update);
     //delte: /items/:id
     router.delete('/items/:id',itemsController.delete);
     
