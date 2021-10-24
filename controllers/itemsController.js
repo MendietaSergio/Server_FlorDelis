@@ -1,4 +1,18 @@
+const multer = require('multer')
+const multerConfig = require('../utils/multerConfig')
 const Items =require('../models/Items')
+
+//instancia de multer
+const upload = multer(multerConfig).single('image')
+//proceso la carga de imagen
+exports.fileUpload = (req,res,next) =>{
+    upload(req, res, function(error) {
+        if(error){
+            res.json({message:error});
+        }
+        return next();//si no hay error sigue la petición.
+    })
+}
 
 exports.home= async (req,res) =>{
     try{
@@ -14,6 +28,9 @@ exports.add = async (req,res)=>{
     const items = new Items(req.body);
     console.log(req.body);
     try{
+        if(req.file && req.file.filename){
+            items.image = req.file.filename//si hay una imagen, le asigno el nombre que multer genera
+        }
         await items.save()
         res.json({
             message:'Nuevo producto agregado!'
@@ -54,10 +71,17 @@ exports.detail = async (req, res, next) =>{
 }
 //actualizar producto
 exports.update = async (req, res, next) =>{
-    try{    
-        const item = await Items.findOneAndUpdate({
+    try{
+        let newItem = req.body; //asigno los nuevos valores a un nuevo item
+        if(req.file && req.file.filname){//si tiene una nueva imagen lo guardo
+            newItem.image = req.file.filename//si hay una imagen, le asigno el nombre que multer genera
+        } else{//sino tiene una nueva imagen, busco la que tenia y lo guardo en el nuevo item
+            const item = await Items.findById(req.params.id)
+            newItem.image = item.image;
+        }
+        const itemUpdate = await Items.findOneAndUpdate({
             _id:req.params.id
-            },req.body,
+            },newItem,
             // {new: true})//para que me devuelva el objeto actualizado
         )
         res.json({
