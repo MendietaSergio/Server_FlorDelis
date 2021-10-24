@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 //   res.send("Servidor en NodeJs");
 // });
 app.use('/',routes())
+app.use(express.static('uploads'))//Para esté expuesta en el servidor y se puedan ver
 app.listen(5000, () => {
   console.log("Servidor corriendo en ", 500);
 });
