@@ -30,6 +30,9 @@ const itemsSchema = mongoose.Schema({
         type:Number,
         required: true
     },
+    image:{
+        type:String
+    },  
     offer:{
         type:Boolean,
         required: true
