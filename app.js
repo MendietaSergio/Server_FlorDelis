@@ -8,9 +8,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.get("/", (req, res) => {
-//   res.send("Servidor en NodeJs");
-// });
+app.get("/", (req, res) => {
+  res.send("Servidor en NodeJs - Flor de Lis");
+});
 app.use("/", routes());
 app.use(express.static("uploads")); //Para esté expuesta en el servidor y se puedan ver
 
