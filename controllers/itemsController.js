@@ -106,3 +106,15 @@ exports.delete = async (req, res, next) =>{
         })
     }
 }
+exports.search = async (req,res,next) =>{
+    try{
+        const items = await Items.find({
+            nameProduct: new RegExp(req.params.query,'i'),
+        })
+        res.json(items)
+    } catch (error) {
+        res.status(400).json({
+            message: "Error al procesar la peticion"
+        })
+    }
+}

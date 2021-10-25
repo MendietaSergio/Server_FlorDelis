@@ -9,6 +9,8 @@ module.exports = function () {
     
     //get: /items/:id
     router.get('/items/:id',itemsController.detail);
+    //get: /items/search
+    router.get('/items/search/:query',itemsController.search);
     
 
     //post: /items
@@ -18,7 +20,6 @@ module.exports = function () {
     router.put('/items/:id',itemsController.fileUpload,itemsController.update);
     //delte: /items/:id
     router.delete('/items/:id',itemsController.delete);
-    
     
     return router;
 }
